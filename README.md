@@ -36,28 +36,33 @@ Misc.:
 ## Todo
 
  + [x] Create starter todo list
- + [x] Get test cases
+ + [x] Get basic test cases
+ + [x] Appreciate Chris McDonald
  + [ ] Add names and student numbers to code comment
+	+ [ ] Check how this should be formatted
+ + [ ] Check if compiler flags are same for gcc and clang, other we got a problem
  + [ ] Implement read_coolexe_file()
      + [ ] Figure out how thats supposed to work
  + [ ] Implement asm instructions in execute_stackmachine()
-	 + [ ] Implement halt
-	 + [ ] Implement nop
-	 + [ ] Implement add
-	 + [ ] Implement sub
-	 + [ ] Implement mult
-	 + [ ] Implement div
-	 + [ ] Implement call (hard?)
-	 + [ ] Implement return
-	 + [ ] Implement jmp
-	 + [ ] Implement jeq (hard?)
-	 + [ ] Implement printi
-	 + [ ] Implement prints
-	 + [ ] Implement pushc
-	 + [ ] Implement pusha
-	 + [ ] Implement pushr
-	 + [ ] Implement popa
-	 + [ ] Implement popr
+	 + [ ] Implement `halt`
+		+ [ ] Check if starter code already has this fully implemented
+	 + [ ] Implement `nop`
+	 + [ ] Implement `add`
+	 + [ ] Implement `sub`
+	 + [ ] Implement `mult`
+	 + [ ] Implement `div`
+	 + [ ] Implement `call` (hard?)
+		+ [ ] Get head around the PC and FP and SP switching for this
+	 + [ ] Implement `return`
+	 + [ ] Implement `jmp`
+	 + [ ] Implement `jeq` (hard?)
+	 + [ ] Implement `printi`
+	 + [ ] Implement `prints`
+	 + [ ] Implement `pushc`
+	 + [ ] Implement `pusha`
+	 + [ ] Implement `pushr`
+	 + [ ] Implement `popa`
+	 + [ ] Implement `popr`
  + [ ] Implement statistics measuring
 	 + [ ] Measure memory reads
 	 + [ ] Measure memory writes
