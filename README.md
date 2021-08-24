@@ -10,10 +10,15 @@ Grade weighting: **25%**
 
 Work in progress!
 
-`runcool` is (will be) an emulator of a very simple 16-bit computer to execute programs compiled in the esoteric programming language *cool*.
+`runcool.c` is (will be) an emulator of a very simple 16-bit computer designed to execute programs compiled from the esoteric programming language *cool*.
+
+Compile with:
+```
+cc -std=c11 -Wall -Werror -o runcool runcool.c
+```
 
 
-## Useful Links:
+## Useful Links
 
 Project info:
  + [project explanation](http://teaching.csse.uwa.edu.au/units/CITS2002/projects/project1.php)
@@ -30,6 +35,36 @@ Misc.:
 
 ## Todo
 
- + [ ] Create todo list
- + [ ] Add name and student numbers to code comment
+ + [x] Create starter todo list
+ + [x] Get test cases
+ + [ ] Add names and student numbers to code comment
+ + [ ] Implement read_coolexe_file()
+     + [ ] Figure out how thats supposed to work
+ + [ ] Implement asm instructions in execute_stackmachine()
+	 + [ ] Implement halt
+	 + [ ] Implement nop
+	 + [ ] Implement add
+	 + [ ] Implement sub
+	 + [ ] Implement mult
+	 + [ ] Implement div
+	 + [ ] Implement call (hard?)
+	 + [ ] Implement return
+	 + [ ] Implement jmp
+	 + [ ] Implement jeq (hard?)
+	 + [ ] Implement printi
+	 + [ ] Implement prints
+	 + [ ] Implement pushc
+	 + [ ] Implement pusha
+	 + [ ] Implement pushr
+	 + [ ] Implement popa
+	 + [ ] Implement popr
+ + [ ] Implement statistics measuring
+	 + [ ] Measure memory reads
+	 + [ ] Measure memory writes
+	 + [ ] Measure cache memory hits
+	 + [ ] Measure cache memory misses
+ + [ ] Figure out how cache memory plays into this.  They keep mentioning it but not explaining it (yet)
+ + [ ] Write & compile some more complex *cool* test cases
+ 
+
 
