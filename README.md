@@ -1,5 +1,9 @@
 # CITS2002 Project 1
 
+**Due date: 11:59pm Friday 17th September (end of week 7)**
+
+**Grade weighting: 25%**
+
 Work in progress!
 
 Will emulate a simple 16-bit computer to execute programs compiled in the esoteric programming language *cool*.
@@ -13,4 +17,5 @@ Some important locations:
 
 ## Todo
  + [ ] Create todo list
+ + [ ] Add name and student numbers to code comment
 
