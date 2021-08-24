@@ -19,3 +19,4 @@ Some important locations:
  + [ ] Create todo list
  + [ ] Add name and student numbers to code comment
 
+![The coolc Programming Language](coolbook.png)
