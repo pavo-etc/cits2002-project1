@@ -17,6 +17,10 @@ Compile with:
 cc -std=c11 -Wall -Werror -o runcool runcool.c
 ```
 
+Run with:
+```
+./runcool program.coolexe
+```
 
 ## Useful Links
 
