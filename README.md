@@ -49,7 +49,7 @@ Misc.:
  + [x] Create starter todo list
  + [x] Get basic test cases
  + [x] Appreciate Chris McDonald
- + [ ] Check [this thread](https://secure.csse.uwa.edu.au/run/help2002?p=np&a=262&all=y2) on how cache handles main memory addressses.  Check off when we know the answer
+ + [ ] Check [this thread](https://secure.csse.uwa.edu.au/run/help2002?p=np&a=262&all=y2) on how cache handles main memory addresses.  Check off when we know the answer
  + [x] Add names and student numbers to code comment
 	+ [ ] Check how this should be formatted
  + [ ] Check if compiler flags are same for gcc and clang, other we got a problem
