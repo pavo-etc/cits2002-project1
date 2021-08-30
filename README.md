@@ -58,11 +58,11 @@ Misc.:
  + [ ] Implement asm instructions in execute_stackmachine()
 	 + [ ] Implement `halt`
 		+ [ ] Check if starter code already has this fully implemented
-	 + [ ] Implement `nop`
-	 + [ ] Implement `add`
-	 + [ ] Implement `sub`
-	 + [ ] Implement `mult`
-	 + [ ] Implement `div`
+	 + [x] Implement `nop`
+	 + [x] Implement `add`
+	 + [x] Implement `sub`
+	 + [x] Implement `mult`
+	 + [x] Implement `div`
 	 + [ ] Implement `call` (hard?)
 		+ [ ] Get head around the PC and FP and SP switching for this
 	 + [ ] Implement `return`
@@ -70,7 +70,7 @@ Misc.:
 	 + [ ] Implement `jeq` (hard?)
 	 + [ ] Implement `printi`
 	 + [ ] Implement `prints`
-	 + [ ] Implement `pushc`
+	 + [x] Implement `pushc`
 	 + [ ] Implement `pusha`
 	 + [ ] Implement `pushr`
 	 + [ ] Implement `popa`

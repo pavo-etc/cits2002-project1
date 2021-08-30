@@ -95,11 +95,13 @@ void report_statistics(void)
 
 AWORD read_memory(int address)
 {
+    ++n_main_memory_reads;
     return main_memory[address];
 }
 
 void write_memory(AWORD address, AWORD value)
 {
+    ++n_main_memory_writes;
     main_memory[address] = value;
 }
 
@@ -118,6 +120,9 @@ int execute_stackmachine(void)
 
     while(true) {
 
+        IWORD value1;
+        IWORD value2;
+        
 //  FETCH THE NEXT INSTRUCTION TO BE EXECUTED
         IWORD instruction   = read_memory(PC);
         ++PC;
@@ -126,6 +131,85 @@ int execute_stackmachine(void)
 
         if(instruction == I_HALT) {
             break;
+        }
+
+        switch (instruction) {
+            case I_NOP :
+                // nop does nothing
+                break;
+
+            case I_ADD :
+                value1 = read_memory(SP);
+                ++SP;
+                value2 = read_memory(SP);
+                ++SP;
+                --SP;
+                write_memory(SP, value1 + value2);
+                break;
+
+            case I_SUB :
+                value1 = read_memory(SP);
+                ++SP;
+                value2 = read_memory(SP);
+                ++SP;
+                --SP;
+                write_memory(SP, value1 - value2);
+                break;
+
+            case I_MULT :
+                value1 = read_memory(SP);
+                ++SP;
+                value2 = read_memory(SP);
+                ++SP;
+                --SP;
+                write_memory(SP, value1 * value2);
+                break;
+            case I_DIV :
+                // won't be testing division by zero (CM, W05 workshop)
+                value1 = read_memory(SP);
+                ++SP;
+                value2 = read_memory(SP);
+                ++SP;
+                --SP;
+                write_memory(SP, value1 / value2);
+                break;
+
+            case I_CALL :
+                break;
+
+            case I_RETURN :
+                break;
+
+            case I_JMP :
+                break;
+
+            case I_JEQ :
+                break;
+
+            case I_PRINTI :
+                break;
+
+            case I_PRINTS :
+                break;
+
+            case I_PUSHC :
+                value1 = read_memory(PC);
+                ++PC;
+                --SP;
+                write_memory(SP, value1);
+                break;
+
+            case I_PUSHA :
+                break;
+
+            case I_PUSHR :
+                break;
+
+            case I_POPA :
+                break;
+
+            case I_POPR :
+                break;
         }
 
 //  SUPPORT OTHER INSTRUCTIONS HERE
@@ -144,6 +228,20 @@ void read_coolexe_file(char filename[])
     memset(main_memory, 0, sizeof main_memory);   //  clear all memory
 
 //  READ CONTENTS OF coolexe FILE
+
+    /* This is the pseudo file reading done in W5 workshop.  Good for testing
+     * until we do this properly.  To enable, remove the space between these two ----> * /
+    int m = 0;
+    main_memory[m++] = I_PUSHC;
+    main_memory[m++] = 10;
+    main_memory[m++] = I_PUSHC;
+    main_memory[m++] = 0;
+    main_memory[m++] = I_PUSHC;
+    main_memory[m++] = 50;
+    main_memory[m++] = I_ADD;
+    main_memory[m++] = I_MULT;
+    main_memory[m++] = I_HALT;
+    //*/
 }
 
 //  -------------------------------------------------------------------
@@ -161,6 +259,8 @@ int main(int argc, char *argv[])
 
 //  EXECUTE THE INSTRUCTIONS FOUND IN main_memory[]
     int result = execute_stackmachine();
+    
+    printf("result: %i\n", result); // debug statement, eventually remove
 
     report_statistics();
 
