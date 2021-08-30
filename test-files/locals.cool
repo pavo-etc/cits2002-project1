@@ -1,8 +1,0 @@
-int main(void)
-{
-    int a;
-    int b = 3;
-    int c = 4;
-
-    c = a + b;
-}

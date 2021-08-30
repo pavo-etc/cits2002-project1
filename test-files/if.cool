@@ -1,7 +1,0 @@
-int main(void)
-{
-    if(3) {
-	return 0;
-    }
-    return 1;
-}
