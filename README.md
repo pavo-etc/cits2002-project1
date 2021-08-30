@@ -12,15 +12,22 @@ Work in progress!
 
 `runcool.c` is (will be) an emulator of a very simple 16-bit computer designed to execute programs compiled from the esoteric programming language *cool*.
 
-Compile with:
+To compile `runcool.c`:
 ```
 cc -std=c11 -Wall -Werror -o runcool runcool.c
 ```
 
-Run with:
+To run `runcool` program with a cool executable:
 ```
 ./runcool program.coolexe
 ```
+
+To compile *cool* source files use the script `cool-executables/coolc.sh`:
+```
+./coolc.sh program.cool
+```
+
+This will output `cool-executables/program.coolexe`.  Run this command in `cool-executables/` folder to avoid clogging up the main directory.
 
 ## Useful Links
 
@@ -42,7 +49,8 @@ Misc.:
  + [x] Create starter todo list
  + [x] Get basic test cases
  + [x] Appreciate Chris McDonald
- + [ ] Add names and student numbers to code comment
+ + [ ] Check [this thread](https://secure.csse.uwa.edu.au/run/help2002?p=np&a=262&all=y2) on how cache handles main memory addressses.  Check off when we know the answer
+ + [x] Add names and student numbers to code comment
 	+ [ ] Check how this should be formatted
  + [ ] Check if compiler flags are same for gcc and clang, other we got a problem
  + [ ] Implement read_coolexe_file()
