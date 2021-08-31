@@ -54,8 +54,8 @@ Misc.:
  + [x] Add names and student numbers to code comment
 	+ [ ] Check how this should be formatted
  + [ ] Check if compiler flags are same for gcc and clang, other we got a problem
- + [ ] Implement read_coolexe_file()
-     + [ ] Figure out how thats supposed to work
+ + [x] Implement read_coolexe_file()
+     + [x] Figure out how thats supposed to work
  + [ ] Implement asm instructions in execute_stackmachine()
 	 + [ ] Implement `halt`
 		+ [ ] Check if starter code already has this fully implemented
