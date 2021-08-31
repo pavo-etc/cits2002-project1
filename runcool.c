@@ -229,19 +229,18 @@ void read_coolexe_file(char filename[])
 
 //  READ CONTENTS OF coolexe FILE
 
-    /* This is the pseudo file reading done in W5 workshop.  Good for testing
-     * until we do this properly.  To enable, remove the space between these two ----> * /
-    int m = 0;
-    main_memory[m++] = I_PUSHC;
-    main_memory[m++] = 10;
-    main_memory[m++] = I_PUSHC;
-    main_memory[m++] = 0;
-    main_memory[m++] = I_PUSHC;
-    main_memory[m++] = 50;
-    main_memory[m++] = I_ADD;
-    main_memory[m++] = I_MULT;
-    main_memory[m++] = I_HALT;
-    //*/
+    FILE* f = fopen(filename, "rb");
+    char byte;
+    int i = 0;
+    while (1) {
+        fread(&byte, 2, 1, f); // reads 2 bytes (16bit word) at a time
+        if (feof(f)) break;
+        printf("Writing %d to %d\n", byte, i);
+        write_memory(i,byte); // check if should be directly to main_memory[]
+        ++i;
+    }
+    fclose(f);
+
 }
 
 //  -------------------------------------------------------------------
