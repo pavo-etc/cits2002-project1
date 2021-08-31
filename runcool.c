@@ -127,7 +127,7 @@ int execute_stackmachine(void)
         IWORD instruction   = read_memory(PC);
         ++PC;
 
-//      printf("%s\n", INSTRUCTION_name[instruction]);
+        printf("%s\n", INSTRUCTION_name[instruction]);
 
         if(instruction == I_HALT) {
             break;
@@ -211,9 +211,6 @@ int execute_stackmachine(void)
             case I_POPR :
                 break;
         }
-
-//  SUPPORT OTHER INSTRUCTIONS HERE
-//      ....
     }
 
 //  THE RESULT OF EXECUTING THE INSTRUCTIONS IS FOUND ON THE TOP-OF-STACK
@@ -228,19 +225,20 @@ void read_coolexe_file(char filename[])
     memset(main_memory, 0, sizeof main_memory);   //  clear all memory
 
 //  READ CONTENTS OF coolexe FILE
-
+    
     FILE* f = fopen(filename, "rb");
-    char byte;
+    AWORD byte;
+    AWORD file_contents[N_MAIN_MEMORY_WORDS];
     int i = 0;
     while (1) {
         fread(&byte, 2, 1, f); // reads 2 bytes (16bit word) at a time
         if (feof(f)) break;
-        printf("Writing %d to %d\n", byte, i);
-        write_memory(i,byte); // check if should be directly to main_memory[]
+        //printf("Writing %i to %d\n", byte, i);
+        file_contents[i] = byte;
         ++i;
     }
     fclose(f);
-
+    memcpy(main_memory, file_contents, sizeof file_contents);
 }
 
 //  -------------------------------------------------------------------
@@ -255,10 +253,11 @@ int main(int argc, char *argv[])
 
 //  READ THE PROVIDED coolexe FILE INTO THE EMULATED MEMORY
     read_coolexe_file(argv[1]);
+    printf("File successfully read into main memory.\n"); // debug
 
 //  EXECUTE THE INSTRUCTIONS FOUND IN main_memory[]
+    printf("Executing stack machine...\n");
     int result = execute_stackmachine();
-    
     printf("result: %i\n", result); // debug statement, eventually remove
 
     report_statistics();
