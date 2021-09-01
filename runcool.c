@@ -107,6 +107,14 @@ void write_memory(AWORD address, AWORD value)
 
 //  -------------------------------------------------------------------
 
+// Generic function for pushing to top of stack
+void PUSH(int *SP, IWORD x) {
+    --*SP;
+    write_memory(*SP, x);
+}
+
+void POP(int *SP, IWORD x) {}
+
 //  EXECUTE THE INSTRUCTIONS IN main_memory[]
 int execute_stackmachine(void)
 {
@@ -195,8 +203,7 @@ int execute_stackmachine(void)
             case I_PUSHC :
                 value1 = read_memory(PC);
                 ++PC;
-                --SP;
-                write_memory(SP, value1);
+                PUSH(&SP, value1);
                 break;
 
             case I_PUSHA :
