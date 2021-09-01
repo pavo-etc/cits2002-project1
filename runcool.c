@@ -113,6 +113,7 @@ void PUSH(int *SP, IWORD x) {
     write_memory(*SP, x);
 }
 
+// Generic function for popping from top of stack
 void POP(int *SP, IWORD x) {}
 
 //  EXECUTE THE INSTRUCTIONS IN main_memory[]
@@ -214,7 +215,7 @@ int execute_stackmachine(void)
                 break;
 
             case I_PUSHA :
-                value1 = read_memory(PC); // value1 is now a memory address
+                value1 = read_memory(PC); // value1 is a memory address
                 ++PC;
                 PUSH(&SP, read_memory(value1)); // push constant at addr. value1
                 break;
@@ -244,11 +245,17 @@ void read_coolexe_file(char filename[])
 {
     memset(main_memory, 0, sizeof main_memory);   //  clear all memory
 
-//  READ CONTENTS OF coolexe FILE
-    
+    // Attempt to open file
     FILE* f = fopen(filename, "rb");
+    // Check file exists
+    if (f == NULL) {
+        fprintf(stderr, "Error: couldn't find file \"%s\"\n", filename);
+        fclose(f);
+        exit(EXIT_FAILURE);
+    }
+    // Read content of file
     AWORD byte;
-    AWORD file_contents[N_MAIN_MEMORY_WORDS];
+    AWORD file_contents[N_MAIN_MEMORY_WORDS]; // max buffer size is total memory
     int i = 0;
     while (1) {
         fread(&byte, 2, 1, f); // reads 2 bytes (16bit word) at a time
