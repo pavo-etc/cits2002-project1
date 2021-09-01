@@ -183,21 +183,28 @@ int execute_stackmachine(void)
                 break;
 
             case I_CALL :
+                printf("\t%s not implemented!\n", INSTRUCTION_name[instruction]);
                 break;
 
             case I_RETURN :
+                printf("\t%s not implemented!\n", INSTRUCTION_name[instruction]);
                 break;
 
             case I_JMP :
+                printf("\t%s not implemented!\n", INSTRUCTION_name[instruction]);
                 break;
 
             case I_JEQ :
+                printf("\t%s not implemented!\n", INSTRUCTION_name[instruction]);
+
                 break;
 
             case I_PRINTI :
+                printf("\t%s not implemented!\n", INSTRUCTION_name[instruction]);
                 break;
 
             case I_PRINTS :
+                printf("\t%s not implemented!\n", INSTRUCTION_name[instruction]);
                 break;
 
             case I_PUSHC :
@@ -213,12 +220,15 @@ int execute_stackmachine(void)
                 break;
 
             case I_PUSHR :
+                printf("\t%s not implemented!\n", INSTRUCTION_name[instruction]);
                 break;
 
             case I_POPA :
+                printf("\t%s not implemented!\n", INSTRUCTION_name[instruction]);
                 break;
 
             case I_POPR :
+                printf("\t%s not implemented!\n", INSTRUCTION_name[instruction]);
                 break;
         }
     }
@@ -266,9 +276,9 @@ int main(int argc, char *argv[])
     printf("File successfully read into main memory.\n"); // debug
 
 //  EXECUTE THE INSTRUCTIONS FOUND IN main_memory[]
-    printf("Executing stack machine...\n");
+    printf("Executing stack machine...\n\n");
     int result = execute_stackmachine();
-    printf("result: %i\n", result); // debug statement, eventually remove
+    printf("\nresult: %i\n", result); // debug statement, eventually remove
 
     report_statistics();
 
