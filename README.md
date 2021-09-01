@@ -72,7 +72,7 @@ Misc.:
 	 + [ ] Implement `printi`
 	 + [ ] Implement `prints`
 	 + [x] Implement `pushc`
-	 + [ ] Implement `pusha`
+	 + [x] Implement `pusha`
 	 + [ ] Implement `pushr`
 	 + [ ] Implement `popa`
 	 + [ ] Implement `popr`

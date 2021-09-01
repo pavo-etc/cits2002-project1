@@ -201,12 +201,15 @@ int execute_stackmachine(void)
                 break;
 
             case I_PUSHC :
-                value1 = read_memory(PC);
+                value1 = read_memory(PC); //value1 is the constant
                 ++PC;
                 PUSH(&SP, value1);
                 break;
 
             case I_PUSHA :
+                value1 = read_memory(PC); // value1 is now a memory address
+                ++PC;
+                PUSH(&SP, read_memory(value1)); // push constant at addr. value1
                 break;
 
             case I_PUSHR :
