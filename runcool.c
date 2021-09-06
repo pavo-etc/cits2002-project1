@@ -114,7 +114,11 @@ void PUSH(int *SP, IWORD x) {
 }
 
 // Generic function for popping from top of stack
-void POP(int *SP, IWORD x) {}
+IWORD POP(int *SP) {
+    IWORD value = read_memory(*SP);
+    ++*SP;
+    return value;
+}
 
 //  EXECUTE THE INSTRUCTIONS IN main_memory[]
 int execute_stackmachine(void)
@@ -148,43 +152,38 @@ int execute_stackmachine(void)
                 break;
 
             case I_ADD :
-                value1 = read_memory(SP);
-                ++SP;
-                value2 = read_memory(SP);
-                ++SP;
-                --SP;
-                write_memory(SP, value1 + value2);
+                value1 = POP(&SP);
+                value2 = POP(&SP);
+                PUSH(&SP, value1+value2);
                 break;
 
             case I_SUB :
-                value1 = read_memory(SP);
-                ++SP;
-                value2 = read_memory(SP);
-                ++SP;
-                --SP;
-                write_memory(SP, value1 - value2);
+                value1 = POP(&SP);
+                value2 = POP(&SP);
+                PUSH(&SP, value1 - value2);
                 break;
 
             case I_MULT :
-                value1 = read_memory(SP);
-                ++SP;
-                value2 = read_memory(SP);
-                ++SP;
-                --SP;
-                write_memory(SP, value1 * value2);
+                value1 = POP(&SP);
+                value2 = POP(&SP);
+                PUSH(&SP, value1 * value2);
                 break;
             case I_DIV :
                 // won't be testing division by zero (CM, W05 workshop)
-                value1 = read_memory(SP);
-                ++SP;
-                value2 = read_memory(SP);
-                ++SP;
-                --SP;
-                write_memory(SP, value1 / value2);
+                value1 = POP(&SP);
+                value2 = POP(&SP);
+                PUSH(&SP, value1 / value2);
                 break;
 
             case I_CALL :
-                printf("    %s not implemented!\n", INSTRUCTION_name[instruction]);
+                //AWORD return_address = ; //PC points to CALL's arg
+                PUSH(&SP, PC+1); // push instruction that will be exec when function returns
+
+                PUSH(&SP, FP); // push previous FP value
+                FP = SP; // new FP is current SP
+
+                value1 = read_memory(PC); // function instruction address
+                PC = value1;
                 break;
 
             case I_RETURN :
@@ -197,8 +196,7 @@ int execute_stackmachine(void)
 
             case I_JEQ :
                 printf("    %s not implemented!\n", INSTRUCTION_name[instruction]);
-
-                break;
+                break; 
 
             case I_PRINTI :
                 printf("    %s not implemented!\n", INSTRUCTION_name[instruction]);
