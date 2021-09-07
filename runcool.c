@@ -129,7 +129,7 @@ int execute_stackmachine(void)
     int FP      = 0;                    // frame pointer
 
 //  REMOVE THE FOLLOWING LINE ONCE YOU ACTUALLY NEED TO USE FP
-    FP = FP;
+    //FP = FP;
 
     while(true) {
 
@@ -160,7 +160,7 @@ int execute_stackmachine(void)
             case I_SUB :
                 value1 = POP(&SP);
                 value2 = POP(&SP);
-                PUSH(&SP, value1 - value2);
+                PUSH(&SP, value2 - value1);
                 break;
 
             case I_MULT :
@@ -172,25 +172,24 @@ int execute_stackmachine(void)
                 // won't be testing division by zero (CM, W05 workshop)
                 value1 = POP(&SP);
                 value2 = POP(&SP);
-                PUSH(&SP, value1 / value2);
+                PUSH(&SP, value2 / value1);
                 break;
 
             case I_CALL :
-                //AWORD return_address = ; //PC points to CALL's arg
                 PUSH(&SP, PC+1); // push instruction address that will be exec when function returns
-
                 PUSH(&SP, FP); // push previous FP value
                 FP = SP; // new FP is current SP
 
                 value1 = read_memory(PC); // called function's address
-                PC = value1; // this may need to be PC = value1 - 1; 
+                PC = value1; // this may need to be PC = value1 - 1; seems to be working as is
                 break;
 
             case I_RETURN :
                 value1 = POP(&SP); // the return value
-                value2 = read_memory(PC + 1); // the offset to for location to write return value
+                value2 = read_memory(PC); // the offset to FP for location to write return value
                 PC = read_memory(FP + 1); // PC moved back to calling function
                 write_memory(FP + value2, value1); // write return value to memory
+                SP = FP + value2; // move TOS to where return value is written
                 FP = read_memory(FP); // FP is set to previous FP
                 break;
 
@@ -219,22 +218,29 @@ int execute_stackmachine(void)
             case I_PUSHA :
                 value1 = read_memory(PC); // value1 is a memory address
                 ++PC;
-                PUSH(&SP, read_memory(value1)); // push constant at addr. value1
+                value2 = read_memory(value1); // constant at address value1
+                PUSH(&SP, value2); // push constant
                 break;
 
             case I_PUSHR :
+                value1 = read_memory(PC); // offset from FP
                 ++PC;
-                printf("    %s not implemented!\n", INSTRUCTION_name[instruction]);
+                value2 = read_memory(FP + value1); // value to push
+                PUSH(&SP, value2);
                 break;
 
             case I_POPA :
+                value1 = read_memory(PC); // address where popped value will go
                 ++PC;
-                printf("    %s not implemented!\n", INSTRUCTION_name[instruction]);
+                value2 = POP(&SP); // value to write
+                write_memory(value1, value2);
                 break;
 
             case I_POPR :
+                value1 = read_memory(PC); // offset to FP
                 ++PC;
-                printf("    %s not implemented!\n", INSTRUCTION_name[instruction]);
+                value2 = POP(&SP); // value to write
+                write_memory(FP + value1, value2);
                 break;
         }
     }
@@ -255,7 +261,6 @@ void read_coolexe_file(char filename[])
     // Check file exists
     if (f == NULL) {
         fprintf(stderr, "Error: couldn't find file \"%s\"\n", filename);
-        fclose(f);
         exit(EXIT_FAILURE);
     }
     // Read content of file
