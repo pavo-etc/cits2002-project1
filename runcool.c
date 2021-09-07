@@ -177,17 +177,21 @@ int execute_stackmachine(void)
 
             case I_CALL :
                 //AWORD return_address = ; //PC points to CALL's arg
-                PUSH(&SP, PC+1); // push instruction that will be exec when function returns
+                PUSH(&SP, PC+1); // push instruction address that will be exec when function returns
 
                 PUSH(&SP, FP); // push previous FP value
                 FP = SP; // new FP is current SP
 
-                value1 = read_memory(PC); // function instruction address
-                PC = value1;
+                value1 = read_memory(PC); // called function's address
+                PC = value1; // this may need to be PC = value1 - 1; 
                 break;
 
             case I_RETURN :
-                printf("    %s not implemented!\n", INSTRUCTION_name[instruction]);
+                value1 = POP(&SP); // the return value
+                value2 = read_memory(PC + 1); // the offset to for location to write return value
+                PC = read_memory(FP + 1); // PC moved back to calling function
+                write_memory(FP + value2, value1); // write return value to memory
+                FP = read_memory(FP); // FP is set to previous FP
                 break;
 
             case I_JMP :
@@ -219,14 +223,17 @@ int execute_stackmachine(void)
                 break;
 
             case I_PUSHR :
+                ++PC;
                 printf("    %s not implemented!\n", INSTRUCTION_name[instruction]);
                 break;
 
             case I_POPA :
+                ++PC;
                 printf("    %s not implemented!\n", INSTRUCTION_name[instruction]);
                 break;
 
             case I_POPR :
+                ++PC;
                 printf("    %s not implemented!\n", INSTRUCTION_name[instruction]);
                 break;
         }
