@@ -1,0 +1,19 @@
+int add(int a, int b) {
+    return a+b;
+}
+int sub(int c, int d) {
+    return c-d;
+}
+int mul(int e, int f) {
+    return e*f;
+}
+int div(int g, int h) {
+    return g/h;
+}
+
+int main(void)
+{
+    int i;
+    i = div( add(10,10) ,4);
+    return i;
+}
