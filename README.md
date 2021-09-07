@@ -53,7 +53,7 @@ Misc.:
     + [ ] Read a chapter on cacheing as recommended in that post
  + [x] Add names and student numbers to code comment
 	+ [ ] Check how this should be formatted
- + [ ] Check if compiler flags are same for gcc and clang, other we got a problem
+ + [ ] Check if compiler flags are same for gcc and clang, otherwise we got a problem
  + [x] Implement read_coolexe_file()
      + [x] Figure out how thats supposed to work
  + [ ] Implement asm instructions in execute_stackmachine()
@@ -64,18 +64,19 @@ Misc.:
 	 + [x] Implement `sub`
 	 + [x] Implement `mult`
 	 + [x] Implement `div`
-	 + [ ] Implement `call` (hard?)
-		+ [ ] Get head around the PC and FP and SP switching for this
-	 + [ ] Implement `return`
+	 + [x] Implement `call` (hard? [update: not as hard as `return`])
+		+ [x] Get head around the PC and FP and SP switching for this
+		+ [ ] Check if implementation works for recursive functions.  Easier to do once we have print and jeq done.
+	 + [x] Implement `return`
 	 + [ ] Implement `jmp`
 	 + [ ] Implement `jeq` (hard?)
 	 + [ ] Implement `printi`
 	 + [ ] Implement `prints`
 	 + [x] Implement `pushc`
 	 + [x] Implement `pusha`
-	 + [ ] Implement `pushr`
-	 + [ ] Implement `popa`
-	 + [ ] Implement `popr`
+	 + [x] Implement `pushr`
+	 + [x] Implement `popa`
+	 + [x] Implement `popr`
  + [ ] Implement statistics measuring
 	 + [ ] Measure memory reads
 	 + [ ] Measure memory writes
