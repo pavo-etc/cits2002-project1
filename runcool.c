@@ -202,7 +202,10 @@ int execute_stackmachine(void)
                 break; 
 
             case I_PRINTI :
-                printf("    %s not implemented!\n", INSTRUCTION_name[instruction]);
+                value1 = read_memory(SP);
+                ++SP;
+                --SP;
+                printf(%d, value1); // prints the integer that was on top of the stack
                 break;
 
             case I_PRINTS :
