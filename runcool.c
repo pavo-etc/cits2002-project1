@@ -194,7 +194,13 @@ int execute_stackmachine(void)
                 break;
 
             case I_JMP :
-                printf("    %s not implemented!\n", INSTRUCTION_name[instruction]);
+                //Get the first word and then the address of that first word
+                //I'm not sure how to make it execute after the address of the first word
+                //But I think my way of getting the first words address is okay.
+                value1 = read_memory(PC);
+                --SP;
+                value2 = read_memory(value1);
+                
                 break;
 
             case I_JEQ :
