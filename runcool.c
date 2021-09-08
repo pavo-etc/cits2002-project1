@@ -205,6 +205,8 @@ int execute_stackmachine(void)
                 value1 = read_memory(SP);
                 ++SP;
                 --SP;
+                //error claiming undeclared identifier 'd' and an expected 
+                //expression error
                 printf(%d, value1); // prints the integer that was on top of the stack
                 break;
 
