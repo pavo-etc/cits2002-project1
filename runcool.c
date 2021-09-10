@@ -140,7 +140,8 @@ int execute_stackmachine(void)
         IWORD instruction   = read_memory(PC);
         ++PC;
 
-        printf("%s\n", INSTRUCTION_name[instruction]);
+        //printf("%s\n", INSTRUCTION_name[instruction]);
+        //printf("%d\n", instruction);
 
         if(instruction == I_HALT) {
             break;
@@ -194,30 +195,45 @@ int execute_stackmachine(void)
                 break;
 
             case I_JMP :
-                //Get the first word and then the address of that first word
-                //I'm not sure how to make it execute after the address of the first word
-                //But I think my way of getting the first words address is okay.
+                //to be commented
                 value1 = read_memory(PC);
-                --SP;
-                value2 = read_memory(value1);
-                
+                ++PC;
+                PC = value1;
                 break;
 
             case I_JEQ :
-                printf("    %s not implemented!\n", INSTRUCTION_name[instruction]);
+                //to be commented
+                value1 = POP(&SP);
+                value2 = read_memory(PC);
+                ++PC;
+                if(value1 == 0){
+                    PC = value2;
+                }
                 break; 
 
             case I_PRINTI :
-                value1 = read_memory(SP);
-                ++SP;
-                --SP;
-                //error claiming undeclared identifier 'd' and an expected 
-                //expression error
-                printf(%d, value1); // prints the integer that was on top of the stack
+                value1 = POP(&SP);
+                //Prints the integer at the top of the Stack
+                printf("%d", value1); 
                 break;
 
             case I_PRINTS :
-                printf("    %s not implemented!\n", INSTRUCTION_name[instruction]);
+                value1 = read_memory(PC);
+                ++PC;
+                int i = value1;
+                while(1){
+                    IWORD two_chars = read_memory(i);
+                    char right_char = two_chars >> 8;
+                    char left_char = (two_chars << 8) >> 8;
+                    
+                    if (left_char == '\0') break;
+                    printf("%c", left_char);
+
+                    if(right_char == '\0') break;
+                    printf("%c", right_char);
+
+                    i++;
+                }
                 break;
 
             case I_PUSHC :
