@@ -195,44 +195,42 @@ int execute_stackmachine(void)
                 break;
 
             case I_JMP :
-                //to be commented
-                value1 = read_memory(PC);
-                ++PC;
-                PC = value1;
+                value1 = read_memory(PC); //sets value1 to const. at PC
+                ++PC; 
+                PC = value1; //put the PC at the address that matches const.
                 break;
 
             case I_JEQ :
-                //to be commented
-                value1 = POP(&SP);
-                value2 = read_memory(PC);
-                ++PC;
+                value1 = POP(&SP); //pop the value at the top of the stack
+                value2 = read_memory(PC); // reads the instruction at PC
+                ++PC; 
+                //to check if the value popped is zero
                 if(value1 == 0){
-                    PC = value2;
+                    PC = value2; //if it's zero, move the program counter to value2
                 }
                 break; 
 
             case I_PRINTI :
-                value1 = POP(&SP);
-                //Prints the integer at the top of the Stack
-                printf("%d", value1); 
+                value1 = POP(&SP); //pops the item at the top of the stack
+                printf("%d", value1); //prints the integer at the top of the stack
                 break;
 
             case I_PRINTS :
-                value1 = read_memory(PC);
+                value1 = read_memory(PC); // sets the instruction at PC to value1
                 ++PC;
-                int i = value1;
+                int i = value1; //the address of value1
                 while(1){
-                    IWORD two_chars = read_memory(i);
-                    char right_char = two_chars >> 8;
-                    char left_char = (two_chars << 8) >> 8;
+                    IWORD two_chars = read_memory(i); //IWORD var that will hold a 16bit binary number
+                    char right_char = two_chars >> 8; //takes the right half of numbers, right char
+                    char left_char = (two_chars << 8) >> 8; //takes the left half of numbers, left char
                     
-                    if (left_char == '\0') break;
-                    printf("%c", left_char);
+                    if (left_char == '\0') break; //breaks the loop if it encounters a nullbyte
+                    printf("%c", left_char); //prints left character from the i number
 
-                    if(right_char == '\0') break;
-                    printf("%c", right_char);
+                    if(right_char == '\0') break; //breaks the loop if it encounters a nullbyte
+                    printf("%c", right_char); //prints the right character from the i number
 
-                    i++;
+                    i++; //hasn't encountered nullbyte yet, goes to the next number
                 }
                 break;
 
