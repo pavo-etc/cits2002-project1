@@ -77,8 +77,7 @@ int n_main_memory_writes    = 0;
 int n_cache_memory_hits     = 0;
 int n_cache_memory_misses   = 0;
 
-void report_statistics(void)
-{
+void report_statistics(void) {
     printf("@number-of-main-memory-reads\t%i\n",    n_main_memory_reads);
     printf("@number-of-main-memory-writes\t%i\n",   n_main_memory_writes);
     printf("@number-of-cache-memory-hits\t%i\n",    n_cache_memory_hits);
@@ -93,14 +92,12 @@ void report_statistics(void)
 //  THIS WILL MAKE THINGS EASIER WHEN WHEN EXTENDING THE CODE TO
 //  SUPPORT CACHE MEMORY
 
-AWORD read_memory(int address)
-{
+AWORD read_memory(int address) {
     ++n_main_memory_reads;
     return main_memory[address];
 }
 
-void write_memory(AWORD address, AWORD value)
-{
+void write_memory(AWORD address, AWORD value) {
     ++n_main_memory_writes;
     main_memory[address] = value;
 }
@@ -120,23 +117,19 @@ IWORD POP(int *SP) {
     return value;
 }
 
-//  EXECUTE THE INSTRUCTIONS IN main_memory[]
-int execute_stackmachine(void)
-{
-//  THE 3 ON-CPU CONTROL REGISTERS:
+// Executes instructions in main_memory
+int execute_stackmachine(void) {
+    // Representations of 3 on-CPU control registers:
     int PC      = 0;                    // 1st instruction is at address=0
     int SP      = N_MAIN_MEMORY_WORDS;  // initialised to top-of-stack
     int FP      = 0;                    // frame pointer
 
-//  REMOVE THE FOLLOWING LINE ONCE YOU ACTUALLY NEED TO USE FP
-    //FP = FP;
-
-    while(true) {
+    while (true) {
 
         IWORD value1;
         IWORD value2;
         
-//  FETCH THE NEXT INSTRUCTION TO BE EXECUTED
+        // Fetch next instruction to be exec
         IWORD instruction   = read_memory(PC);
         ++PC;
 
@@ -195,47 +188,48 @@ int execute_stackmachine(void)
                 break;
 
             case I_JMP :
-                value1 = read_memory(PC); //sets value1 to const. at PC
-                ++PC; 
-                PC = value1; //put the PC at the address that matches const.
+                value1 = read_memory(PC); // value1 is address to set PC too
+                ++PC; // unnecessary, left in for consistency with other arg reads
+                PC = value1;
                 break;
 
             case I_JEQ :
-                value1 = POP(&SP); //pop the value at the top of the stack
-                value2 = read_memory(PC); // reads the instruction at PC
+                // We implemented slow-jeq
+                value1 = POP(&SP);
+                value2 = read_memory(PC); // read potential next PC address
                 ++PC; 
-                //to check if the value popped is zero
-                if(value1 == 0){
-                    PC = value2; //if it's zero, move the program counter to value2
+                
+                if (value1 == 0) {
+                    PC = value2;
                 }
                 break; 
 
             case I_PRINTI :
-                value1 = POP(&SP); //pops the item at the top of the stack
-                printf("%d", value1); //prints the integer at the top of the stack
+                value1 = POP(&SP); // item to print at TOS
+                printf("%d", value1);
                 break;
 
             case I_PRINTS :
-                value1 = read_memory(PC); // sets the instruction at PC to value1
+                value1 = read_memory(PC); // read address string starts at
                 ++PC;
-                int i = value1; //the address of value1
-                while(1){
-                    IWORD two_chars = read_memory(i); //IWORD var that will hold a 16bit binary number
-                    char right_char = two_chars >> 8; //takes the right half of numbers, right char
-                    char left_char = (two_chars << 8) >> 8; //takes the left half of numbers, left char
+                int i = value1; // loop index starts at address value1
+                while (1) {
+                    IWORD two_chars = read_memory(i); // var that hold a 16bit value
+                    char left_char = (two_chars << 8) >> 8; // takes the left 8 bits, forms left char
+                    char right_char = two_chars >> 8; // takes the right 8bits, forms right char
                     
-                    if (left_char == '\0') break; //breaks the loop if it encounters a nullbyte
-                    printf("%c", left_char); //prints left character from the i number
+                    if (left_char == '\0') break;
+                    printf("%c", left_char);
 
-                    if(right_char == '\0') break; //breaks the loop if it encounters a nullbyte
-                    printf("%c", right_char); //prints the right character from the i number
+                    if(right_char == '\0') break;
+                    printf("%c", right_char);
 
-                    i++; //hasn't encountered nullbyte yet, goes to the next number
+                    i++; // hasn't encountered nullbyte yet, moves index to next word in memory
                 }
                 break;
 
             case I_PUSHC :
-                value1 = read_memory(PC); //value1 is the constant
+                value1 = read_memory(PC); // value1 is the constant
                 ++PC;
                 PUSH(&SP, value1);
                 break;
@@ -269,16 +263,14 @@ int execute_stackmachine(void)
                 break;
         }
     }
-
-//  THE RESULT OF EXECUTING THE INSTRUCTIONS IS FOUND ON THE TOP-OF-STACK
+    // Result of program is on TOS
     return read_memory(SP);
 }
 
 //  -------------------------------------------------------------------
 
-//  READ THE PROVIDED coolexe FILE INTO main_memory[]
-void read_coolexe_file(char filename[])
-{
+// Reads coolexe file into main_memory
+void read_coolexe_file(char filename[]) {
     memset(main_memory, 0, sizeof main_memory);   //  clear all memory
 
     // Attempt to open file
@@ -305,20 +297,18 @@ void read_coolexe_file(char filename[])
 
 //  -------------------------------------------------------------------
 
-int main(int argc, char *argv[])
-{
-//  CHECK THE NUMBER OF ARGUMENTS
+int main(int argc, char *argv[]) {
+
+    // Check there are 2 args
     if(argc != 2) {
         fprintf(stderr, "Usage: %s program.coolexe\n", argv[0]);
         exit(EXIT_FAILURE);
     }
 
-//  READ THE PROVIDED coolexe FILE INTO THE EMULATED MEMORY
     read_coolexe_file(argv[1]);
     printf("File successfully read into main memory.\n"); // debug
 
-//  EXECUTE THE INSTRUCTIONS FOUND IN main_memory[]
-    printf("Executing stack machine...\n\n");
+    printf("Executing stack machine...\n\n"); // debug
     int result = execute_stackmachine();
     printf("\nresult: %i\n", result); // debug statement, eventually remove
 
