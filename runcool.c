@@ -70,6 +70,12 @@ const char *INSTRUCTION_name[] = {
 
 //  ----  IT IS SAFE TO MODIFY ANYTHING BELOW THIS LINE  --------------
 
+struct Cache {
+    AWORD value;
+    AWORD address;
+    bool dirty;
+    bool valid;
+} cache_memory[N_CACHE_WORDS];
 
 //  THE STATISTICS TO BE ACCUMULATED AND REPORTED
 int n_main_memory_reads     = 0;
@@ -92,14 +98,54 @@ void report_statistics(void) {
 //  THIS WILL MAKE THINGS EASIER WHEN WHEN EXTENDING THE CODE TO
 //  SUPPORT CACHE MEMORY
 
-AWORD read_memory(int address) {
+AWORD read_memory(AWORD address) {
+    int cache_slot = address % N_CACHE_WORDS;
+
+    if (cache_memory[cache_slot].valid == false) {
+        cache_memory[cache_slot].value = main_memory[address];
+        cache_memory[cache_slot].address = address;
+        cache_memory[cache_slot].dirty = false;
+        cache_memory[cache_slot].valid = true;
+        ++n_cache_memory_misses;
+        ++n_main_memory_reads;
+        //printf("from invalid cache slot [%d]: %d\n", cache_slot, cache_memory[cache_slot].value);
+        return cache_memory[cache_slot].value;
+    }
+
+    if (cache_memory[cache_slot].address == address) {
+        //printf("from cache_slot[%d]: %d\n", cache_slot, cache_memory[cache_slot].value);
+        ++n_cache_memory_hits;
+        return cache_memory[cache_slot].value; 
+    }
+
+    if (cache_memory[cache_slot].dirty == true) {
+        //printf("wrote dirty cache slot[%d] to mem: %d\n", cache_slot, cache_memory[cache_slot].value);
+        main_memory[ cache_memory[cache_slot].address ] = cache_memory[cache_slot].value;
+        ++n_main_memory_writes;
+    }
+
+    cache_memory[cache_slot].value = main_memory[address];
+    cache_memory[cache_slot].address = address;
+    cache_memory[cache_slot].dirty = false;
+    ++n_cache_memory_misses;
     ++n_main_memory_reads;
-    return main_memory[address];
+    //printf("from cache in slot[%d]: %d\n", cache_slot, cache_memory[cache_slot].value);
+    return cache_memory[cache_slot].value;    
 }
 
 void write_memory(AWORD address, AWORD value) {
-    ++n_main_memory_writes;
-    main_memory[address] = value;
+    int cache_slot = address % N_CACHE_WORDS;
+
+    if (cache_memory[cache_slot].dirty == true) {
+        main_memory[ cache_memory[cache_slot].address ] = cache_memory[cache_slot].value;
+        ++n_main_memory_writes;
+    }
+
+    cache_memory[cache_slot].value = value;
+    cache_memory[cache_slot].address = address;
+    cache_memory[cache_slot].dirty = true;
+    cache_memory[cache_slot].valid = true;
+    //printf("dirty write to slot[%d]: %d\n", cache_slot, cache_memory[cache_slot].value);
 }
 
 //  -------------------------------------------------------------------
@@ -108,12 +154,15 @@ void write_memory(AWORD address, AWORD value) {
 void PUSH(int *SP, IWORD x) {
     --*SP;
     write_memory(*SP, x);
+    //printf("PUSHING:  *SP = %d x = %d\n", *SP, x);
 }
 
 // Generic function for popping from top of stack
 IWORD POP(int *SP) {
     IWORD value = read_memory(*SP);
+    //printf("POPPING:  *SP = %d value = %d\n", *SP, value);
     ++*SP;
+
     return value;
 }
 
@@ -133,8 +182,8 @@ int execute_stackmachine(void) {
         IWORD instruction   = read_memory(PC);
         ++PC;
 
+        //printf("instruction num: %d\n", instruction);
         //printf("%s\n", INSTRUCTION_name[instruction]);
-        //printf("%d\n", instruction);
 
         if(instruction == I_HALT) {
             break;
