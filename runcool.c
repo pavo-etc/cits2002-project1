@@ -237,7 +237,7 @@ int execute_stackmachine(void) {
                 break;
 
             case I_JMP :
-                value1 = read_memory(PC); // value1 is address to set PC too
+                value1 = read_memory(PC); // value1 is address to set PC to
                 ++PC; // unnecessary, left in for consistency with other arg reads
                 PC = value1;
                 break;
