@@ -118,7 +118,7 @@ AWORD read_memory(AWORD address) {
         ++n_cache_memory_hits;
         return cache_memory[cache_slot].value; 
     }
-    // case if what we are looking for isn't in cache and its replacing something that is only in the cache
+    // case if what we are looking for isn't in cache and its replacing something that's dirty stored
     if (cache_memory[cache_slot].dirty == true) {
         //printf("wrote dirty cache slot[%d] to mem: %d\n", cache_slot, cache_memory[cache_slot].value);
         // writes what's about to be replaced into main memory
@@ -139,7 +139,7 @@ void write_memory(AWORD address, AWORD value) {
     // makes sure to get the correct slot for any address in main memory
     int cache_slot = address % N_CACHE_WORDS;
 
-    // writes in main memory if only in the cache, to avoid memory lost
+    // writes dirty stored cache valued to main memory to avoid memory lost
     if (cache_memory[cache_slot].dirty == true) {
         main_memory[ cache_memory[cache_slot].address ] = cache_memory[cache_slot].value;
         ++n_main_memory_writes;
