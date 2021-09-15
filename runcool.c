@@ -70,12 +70,13 @@ const char *INSTRUCTION_name[] = {
 
 //  ----  IT IS SAFE TO MODIFY ANYTHING BELOW THIS LINE  --------------
 
+// creates all the variables (our cache structure) we are using for a cache memory
 struct Cache {
-    AWORD value;
-    AWORD address;
-    bool dirty;
-    bool valid;
-} cache_memory[N_CACHE_WORDS];
+    AWORD value; // holds the value in cache
+    AWORD address; // holds the address in cache
+    bool dirty; // true if the value in cache is only in cache
+    bool valid; // false at the start if the slot in cache hasn't been used yet
+} cache_memory[N_CACHE_WORDS]; //cache 32bit array 
 
 //  THE STATISTICS TO BE ACCUMULATED AND REPORTED
 int n_main_memory_reads     = 0;
@@ -100,7 +101,7 @@ void report_statistics(void) {
 
 AWORD read_memory(AWORD address) {
     int cache_slot = address % N_CACHE_WORDS;
-
+    // case if the cache slot hasn't been used before in this execution
     if (cache_memory[cache_slot].valid == false) {
         cache_memory[cache_slot].value = main_memory[address];
         cache_memory[cache_slot].address = address;
@@ -111,22 +112,23 @@ AWORD read_memory(AWORD address) {
         //printf("from invalid cache slot [%d]: %d\n", cache_slot, cache_memory[cache_slot].value);
         return cache_memory[cache_slot].value;
     }
-
+    // case if what we are looking for is in the cache (a.k.a a cache hit)
     if (cache_memory[cache_slot].address == address) {
         //printf("from cache_slot[%d]: %d\n", cache_slot, cache_memory[cache_slot].value);
         ++n_cache_memory_hits;
         return cache_memory[cache_slot].value; 
     }
-
+    // case if what we are looking for isn't in cache and its replacing something that is only in the cache
     if (cache_memory[cache_slot].dirty == true) {
         //printf("wrote dirty cache slot[%d] to mem: %d\n", cache_slot, cache_memory[cache_slot].value);
+        // writes what's about to be replaced into main memory
         main_memory[ cache_memory[cache_slot].address ] = cache_memory[cache_slot].value;
         ++n_main_memory_writes;
     }
-
+    // now we can add into the cache without losing any information
     cache_memory[cache_slot].value = main_memory[address];
     cache_memory[cache_slot].address = address;
-    cache_memory[cache_slot].dirty = false;
+    cache_memory[cache_slot].dirty = false; // dirty is set to false since information is not only in cache
     ++n_cache_memory_misses;
     ++n_main_memory_reads;
     //printf("from cache in slot[%d]: %d\n", cache_slot, cache_memory[cache_slot].value);
@@ -134,17 +136,20 @@ AWORD read_memory(AWORD address) {
 }
 
 void write_memory(AWORD address, AWORD value) {
+    // makes sure to get the correct slot for any address in main memory
     int cache_slot = address % N_CACHE_WORDS;
 
+    // writes in main memory if only in the cache, to avoid memory lost
     if (cache_memory[cache_slot].dirty == true) {
         main_memory[ cache_memory[cache_slot].address ] = cache_memory[cache_slot].value;
         ++n_main_memory_writes;
     }
 
+    // adds to the cache memory
     cache_memory[cache_slot].value = value;
     cache_memory[cache_slot].address = address;
-    cache_memory[cache_slot].dirty = true;
-    cache_memory[cache_slot].valid = true;
+    cache_memory[cache_slot].dirty = true; // once written in cache it's only in cache
+    cache_memory[cache_slot].valid = true; // slot has been used, hence is now valid
     //printf("dirty write to slot[%d]: %d\n", cache_slot, cache_memory[cache_slot].value);
 }
 
