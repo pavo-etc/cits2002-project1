@@ -269,8 +269,8 @@ int execute_stackmachine(void) {
                 int i = value1; // loop index starts at address value1
                 while (1) {
                     IWORD two_chars = read_memory(i); // var that hold a 16bit value
-                    char right_char = (two_chars << 8) >> 8; // takes the right 8 bits, forms right char
-                    char left_char = two_chars >> 8; // takes the left 8bits, forms left char
+                    char left_char = (two_chars << 8) >> 8; // takes the left 8 bits, forms left char
+                    char right_char = two_chars >> 8; // takes the right 8bits, forms right char
                     
                     if (left_char == '\0') break;
                     printf("%c", left_char);
