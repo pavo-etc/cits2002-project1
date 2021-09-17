@@ -109,18 +109,15 @@ AWORD read_memory(AWORD address) {
         cache_memory[cache_slot].valid = true;
         ++n_cache_memory_misses;
         ++n_main_memory_reads;
-        //printf("from invalid cache slot [%d]: %d\n", cache_slot, cache_memory[cache_slot].value);
         return cache_memory[cache_slot].value;
     }
     // case if what we are looking for is in the cache (a.k.a a cache hit)
     if (cache_memory[cache_slot].address == address) {
-        //printf("from cache_slot[%d]: %d\n", cache_slot, cache_memory[cache_slot].value);
         ++n_cache_memory_hits;
         return cache_memory[cache_slot].value; 
     }
     // case if what we are looking for isn't in cache and its replacing something that's dirty stored
     if (cache_memory[cache_slot].dirty == true) {
-        //printf("wrote dirty cache slot[%d] to mem: %d\n", cache_slot, cache_memory[cache_slot].value);
         // writes what's about to be replaced into main memory
         main_memory[ cache_memory[cache_slot].address ] = cache_memory[cache_slot].value;
         ++n_main_memory_writes;
@@ -131,7 +128,6 @@ AWORD read_memory(AWORD address) {
     cache_memory[cache_slot].dirty = false; // dirty is set to false since information is not only in cache
     ++n_cache_memory_misses;
     ++n_main_memory_reads;
-    //printf("from cache in slot[%d]: %d\n", cache_slot, cache_memory[cache_slot].value);
     return cache_memory[cache_slot].value;    
 }
 
@@ -150,7 +146,6 @@ void write_memory(AWORD address, AWORD value) {
     cache_memory[cache_slot].address = address;
     cache_memory[cache_slot].dirty = true; // once written in cache it's only in cache
     cache_memory[cache_slot].valid = true; // slot has been used, hence is now valid
-    //printf("dirty write to slot[%d]: %d\n", cache_slot, cache_memory[cache_slot].value);
 }
 
 //  -------------------------------------------------------------------
@@ -159,13 +154,11 @@ void write_memory(AWORD address, AWORD value) {
 void PUSH(int *SP, IWORD x) {
     --*SP;
     write_memory(*SP, x);
-    //printf("PUSHING:  *SP = %d x = %d\n", *SP, x);
 }
 
 // Generic function for popping from top of stack
 IWORD POP(int *SP) {
     IWORD value = read_memory(*SP);
-    //printf("POPPING:  *SP = %d value = %d\n", *SP, value);
     ++*SP;
 
     return value;
@@ -186,9 +179,6 @@ int execute_stackmachine(void) {
         // Fetch next instruction to be exec
         IWORD instruction   = read_memory(PC);
         ++PC;
-
-        //printf("instruction num: %d\n", instruction);
-        //printf("%s\n", INSTRUCTION_name[instruction]);
 
         if(instruction == I_HALT) {
             break;
@@ -341,7 +331,6 @@ void read_coolexe_file(char filename[]) {
     while (1) {
         fread(&byte, 2, 1, f); // reads 2 bytes (16bit word) at a time
         if (feof(f)) break;
-        //printf("Writing %i to %d\n", byte, i);
         file_contents[i] = byte;
         ++i;
     }
@@ -360,12 +349,7 @@ int main(int argc, char *argv[]) {
     }
 
     read_coolexe_file(argv[1]);
-    printf("File successfully read into main memory.\n"); // debug
-
-    printf("Executing stack machine...\n\n"); // debug
     int result = execute_stackmachine();
-    printf("\nresult: %i\n", result); // debug statement, eventually remove
-
     report_statistics();
 
     return result;          // or  exit(result);
