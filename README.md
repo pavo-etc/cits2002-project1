@@ -49,8 +49,8 @@ Misc.:
  + [x] Create starter todo list
  + [x] Get basic test cases
  + [x] Appreciate Chris McDonald
- + [ ] Check [this thread](https://secure.csse.uwa.edu.au/run/help2002?p=np&a=262&all=y2) on how cache handles main memory addresses.  Check off when we know the answer
-    + [ ] Read a chapter on cacheing as recommended in that post
+ + [x] Check [this thread](https://secure.csse.uwa.edu.au/run/help2002?p=np&a=262&all=y2) on how cache handles main memory addresses.  Check off when we know the answer
+    + [x] Read a chapter on cacheing as recommended in that post
  + [x] Add names and student numbers to code comment
 	+ [ ] Check how this should be formatted
  + [x] Check if compiler flags are same for gcc and clang, otherwise we got a problem
@@ -76,13 +76,14 @@ Misc.:
 	 + [x] Implement `pushr`
 	 + [x] Implement `popa`
 	 + [x] Implement `popr`
- + [ ] Check if implementation works for recursive functions.  Easier to do once we have print and jeq done.
- + [ ] Implement statistics measuring
-	 + [ ] Measure memory reads
-	 + [ ] Measure memory writes
-	 + [ ] Measure cache memory hits
-	 + [ ] Measure cache memory misses
- + [ ] Figure out how cache memory plays into this.  They keep mentioning it but not explaining it (yet)
+ + [x] Check if implementation works for recursive functions.  Easier to do once we have print and jeq done.
+ + [x] Implement statistics measuring
+	 + [x] Measure memory reads
+	 + [x] Measure memory writes
+	 + [x] Measure cache memory hits
+	 + [x] Measure cache memory misses
+ + [x] Figure out how cache memory plays into this.  They keep mentioning it but not explaining it (yet)
+ + [x] Do cache
  + [ ] Write & compile some more complex *cool* test cases
  
 
