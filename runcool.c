@@ -140,7 +140,7 @@ void write_memory(AWORD address, AWORD value) {
     int cache_slot = address % N_CACHE_WORDS;
 
     // writes dirty stored cache valued to main memory to avoid memory lost
-    if (cache_memory[cache_slot].dirty == true) {
+    if (address != cache_memory[cache_slot].address && cache_memory[cache_slot].dirty == true) {
         main_memory[ cache_memory[cache_slot].address ] = cache_memory[cache_slot].value;
         ++n_main_memory_writes;
     }
