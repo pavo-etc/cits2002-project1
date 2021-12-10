@@ -1,5 +1,7 @@
 # CITS2002 Project 1
 
+Final grade: 94%
+
 Due date: **11:59pm Friday 17th September (end of week 7)**
 
 Grade weighting: **25%**
@@ -8,9 +10,7 @@ Grade weighting: **25%**
   <img src="coolbook.png" width="250px" height="350"/>
 </p>
 
-Work in progress!
-
-`runcool.c` is (will be) an emulator of a very simple 16-bit computer designed to execute programs compiled from the esoteric programming language *cool*.
+`runcool.c` is an emulator of a simple 16-bit computer designed to execute programs compiled from the esoteric programming language *cool*.
 
 To compile `runcool.c`:
 ```
