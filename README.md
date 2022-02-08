@@ -2,6 +2,8 @@
 
 Final grade: 94%
 
+CITS2002 Project 1
+
 Due date: **11:59pm Friday 17th September (end of week 7)**
 
 Grade weighting: **25%**
